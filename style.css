@@ -1,14 +1,14 @@
 :root {
-  --ink-950: #07090d;
-  --ink-900: #0d1218;
-  --ink-800: #141b23;
-  --ink-700: #1b232d;
-  --ink-600: #263140;
-  --ink-500: #384456;
+  --ink-950: #141920;
+  --ink-900: #1b222b;
+  --ink-800: #242d38;
+  --ink-700: #2e3846;
+  --ink-600: #3d4859;
+  --ink-500: #56637a;
   --paper: #e9e3d4;
-  --text-hi: #edf0f4;
-  --text-mid: #93a0b2;
-  --text-low: #576274;
+  --text-hi: #f6f8fa;
+  --text-mid: #c2cad6;
+  --text-low: #92a0b2;
   --alarm: #d6493a;
   --alarm-dim: #4a2620;
   --gold: #c9a24b;
