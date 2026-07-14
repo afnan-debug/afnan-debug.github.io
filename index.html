@@ -1,56 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Afnan | Financial Crime Portfolio</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Case Ledger — Financial Crime Monitoring</title>
+<meta name="description" content="AML / fraud investigation dashboard — sample case ledger, risk scoring, and link analysis." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="container">
-    <header>
-        <div class="badge">AML • Fraud Detection • Investigations</div>
-        <h1>Afnan</h1>
-        <p class="subtitle">
-            Passionate about detecting financial crime, uncovering fraud patterns,
-            and investigating unusual transaction behavior to protect customers and institutions.
-        </p>
-    </header>
+<div class="shell">
 
-    <section class="card">
-        <h2>Core Skills</h2>
-        <div class="grid">
-            <div>Transaction Monitoring</div>
-            <div>Fraud Detection</div>
-            <div>AML Investigations</div>
-            <div>Risk Assessment</div>
-            <div>CDD & EDD Reviews</div>
-            <div>Pattern Recognition</div>
-            <div>Case Management</div>
-            <div>Financial Crime Prevention</div>
-        </div>
+  <header class="masthead">
+    <div class="masthead-title">
+      <h1>Case Ledger</h1>
+      <span class="file-no">FINANCIAL CRIME MONITORING — DEMO</span>
+    </div>
+    <div class="masthead-meta">
+      Analyst on record: <span class="analyst">A. Afnan</span><br>
+      As of <span id="stamp-date">—</span>
+    </div>
+  </header>
+
+  <section class="ledger-strip">
+    <div class="ledger-cell">
+      <div class="label">Open / Escalated</div>
+      <div class="value alarm" id="kpi-open">—</div>
+      <div class="sub">active investigations</div>
+    </div>
+    <div class="ledger-cell">
+      <div class="label">High Risk (80+)</div>
+      <div class="value gold" id="kpi-highrisk">—</div>
+      <div class="sub">risk score threshold</div>
+    </div>
+    <div class="ledger-cell">
+      <div class="label">Pending SAR</div>
+      <div class="value" id="kpi-sars">—</div>
+      <div class="sub">awaiting filing</div>
+    </div>
+    <div class="ledger-cell">
+      <div class="label">Avg. Case Value</div>
+      <div class="value ok" id="kpi-avgamt">—</div>
+      <div class="sub">flagged transaction amount</div>
+    </div>
+  </section>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="workspace">
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Flagged Cases</h2>
+        <span class="count" id="case-count">—</span>
+      </div>
+      <table class="ledger-table">
+        <thead>
+          <tr>
+            <th>Case ID</th>
+            <th>Entity</th>
+            <th>Typology</th>
+            <th>Risk</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Opened</th>
+          </tr>
+        </thead>
+        <tbody id="case-tbody"></tbody>
+      </table>
     </section>
 
-    <section class="card">
-        <h2>Sample Investigation Cases</h2>
-        <ul>
-            <li><strong>Structuring Activity:</strong> Multiple deposits below reporting thresholds across multiple locations.</li>
-            <li><strong>Account Takeover:</strong> Device change, password reset, and high-risk transfers in a short time period.</li>
-            <li><strong>Money Mule Activity:</strong> Incoming payments followed by rapid outgoing transfers.</li>
-        </ul>
-    </section>
+    <aside class="panel drawer">
+      <div class="panel-head">
+        <h2>Investigation File</h2>
+      </div>
+      <div class="drawer-body" id="drawer-body"></div>
+    </aside>
 
-    <section class="card">
-        <h2>Why I Enjoy Investigations</h2>
-        <p>
-            I enjoy identifying hidden patterns, connecting data points, and making
-            risk-based decisions to prevent financial crime and protect institutions.
-        </p>
-    </section>
+  </div>
 
-    <footer>
-        Future additions: fraud dashboards, SQL projects, detection rules, and case studies.
-    </footer>
+  <footer class="foot">
+    <span>Sample data for demonstration only — no real customer or account information.</span>
+    <span>Built by A. Afnan</span>
+  </footer>
+
 </div>
+<script src="script.js"></script>
 </body>
 </html>
