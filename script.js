@@ -1,7 +1,496 @@
 // Fallback data (used if data/cases.json can't be fetched, e.g. opened via file://).
-// The canonical copy lives in data/cases.json — edit that file to change the dataset,
-// this constant just keeps the page working when there's no HTTP server.
-const FALLBACK_CASES = [];
+// Kept in sync with data/cases.json — edit both if you change the dataset, or just
+// edit this one if you never touch the JSON file directly.
+const FALLBACK_CASES = [
+  {
+    "id": "FC-2026-0142",
+    "typology": "Structuring",
+    "entity": "J. Marsh Holdings",
+    "acct": "AC-4471",
+    "riskScore": 88,
+    "status": "Escalated",
+    "amount": 47250,
+    "opened": "2026-07-02",
+    "narrative": "Six cash deposits across four branches, each between $8,400 and $9,700, made over five business days. Deposit sizing sits consistently under the $10,000 CTR threshold.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-4471",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "Branch 04",
+        "role": "node",
+        "x": 90,
+        "y": 40
+      },
+      {
+        "id": "n3",
+        "label": "Branch 11",
+        "role": "node",
+        "x": 90,
+        "y": 140
+      },
+      {
+        "id": "n4",
+        "label": "Branch 22",
+        "role": "node",
+        "x": 330,
+        "y": 40
+      },
+      {
+        "id": "n5",
+        "label": "Branch 07",
+        "role": "node",
+        "x": 330,
+        "y": 140
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "$9,650"
+      },
+      {
+        "from": "n3",
+        "to": "n1",
+        "label": "$8,900"
+      },
+      {
+        "from": "n4",
+        "to": "n1",
+        "label": "$9,400"
+      },
+      {
+        "from": "n5",
+        "to": "n1",
+        "label": "$8,450"
+      }
+    ]
+  },
+  {
+    "id": "FC-2026-0139",
+    "typology": "Account Takeover",
+    "entity": "R. Delgado",
+    "acct": "AC-2290",
+    "riskScore": 94,
+    "status": "Open",
+    "amount": 18900,
+    "opened": "2026-07-05",
+    "narrative": "Device fingerprint changed at 02:14, password reset at 02:19, two high-value wire transfers initiated at 02:31 \u2014 an 8-minute window inconsistent with the customer's prior 3-year session history.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-2290",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "New device",
+        "role": "flag",
+        "x": 90,
+        "y": 40
+      },
+      {
+        "id": "n3",
+        "label": "Pw reset",
+        "role": "flag",
+        "x": 90,
+        "y": 140
+      },
+      {
+        "id": "n4",
+        "label": "AC-9981",
+        "role": "destination",
+        "x": 330,
+        "y": 40
+      },
+      {
+        "id": "n5",
+        "label": "AC-7743",
+        "role": "destination",
+        "x": 330,
+        "y": 140
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "02:14"
+      },
+      {
+        "from": "n3",
+        "to": "n1",
+        "label": "02:19"
+      },
+      {
+        "from": "n1",
+        "to": "n4",
+        "label": "$11,200"
+      },
+      {
+        "from": "n1",
+        "to": "n5",
+        "label": "$7,700"
+      }
+    ]
+  },
+  {
+    "id": "FC-2026-0137",
+    "typology": "Money Mule",
+    "entity": "T. Okafor",
+    "acct": "AC-5518",
+    "riskScore": 76,
+    "status": "Pending SAR",
+    "amount": 32100,
+    "opened": "2026-06-29",
+    "narrative": "Dormant account received three inbound payments from unrelated senders, each followed by an outbound transfer to a crypto exchange within 90 minutes of receipt.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-5518",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "Sender A",
+        "role": "node",
+        "x": 90,
+        "y": 40
+      },
+      {
+        "id": "n3",
+        "label": "Sender B",
+        "role": "node",
+        "x": 90,
+        "y": 140
+      },
+      {
+        "id": "n4",
+        "label": "Sender C",
+        "role": "node",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "id": "n5",
+        "label": "Exchange X",
+        "role": "destination",
+        "x": 350,
+        "y": 90
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "$11,000"
+      },
+      {
+        "from": "n3",
+        "to": "n1",
+        "label": "$9,600"
+      },
+      {
+        "from": "n4",
+        "to": "n1",
+        "label": "$11,500"
+      },
+      {
+        "from": "n1",
+        "to": "n5",
+        "label": "$31,800"
+      }
+    ]
+  },
+  {
+    "id": "FC-2026-0135",
+    "typology": "Structuring",
+    "entity": "Coastal Vending LLC",
+    "acct": "AC-3305",
+    "riskScore": 62,
+    "status": "Open",
+    "amount": 28400,
+    "opened": "2026-06-27",
+    "narrative": "Business account shows a pattern of same-day cash deposits split between teller and ATM channels, each increment held just under the internal $9,500 alert tier.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-3305",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "Teller dep.",
+        "role": "node",
+        "x": 100,
+        "y": 60
+      },
+      {
+        "id": "n3",
+        "label": "ATM dep.",
+        "role": "node",
+        "x": 100,
+        "y": 130
+      },
+      {
+        "id": "n4",
+        "label": "ATM dep.",
+        "role": "node",
+        "x": 330,
+        "y": 90
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "$9,200"
+      },
+      {
+        "from": "n3",
+        "to": "n1",
+        "label": "$9,450"
+      },
+      {
+        "from": "n4",
+        "to": "n1",
+        "label": "$9,750"
+      }
+    ]
+  },
+  {
+    "id": "FC-2026-0131",
+    "typology": "Account Takeover",
+    "entity": "M. Huang",
+    "acct": "AC-6642",
+    "riskScore": 41,
+    "status": "Cleared",
+    "amount": 4200,
+    "opened": "2026-06-21",
+    "narrative": "Login from a new IP triggered step-up authentication; customer confirmed the device and transaction by phone within the hour. Closed as false positive.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-6642",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "New IP",
+        "role": "flag",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "id": "n3",
+        "label": "Verified call",
+        "role": "node",
+        "x": 330,
+        "y": 90
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "flag"
+      },
+      {
+        "from": "n1",
+        "to": "n3",
+        "label": "cleared"
+      }
+    ]
+  },
+  {
+    "id": "FC-2026-0128",
+    "typology": "Money Mule",
+    "entity": "D. Petrov",
+    "acct": "AC-7719",
+    "riskScore": 81,
+    "status": "Escalated",
+    "amount": 51300,
+    "opened": "2026-06-18",
+    "narrative": "Account opened 11 days prior with minimal activity, then received five inbound transfers from accounts previously flagged in unrelated fraud cases.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-7719",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "AC-1102*",
+        "role": "node",
+        "x": 90,
+        "y": 30
+      },
+      {
+        "id": "n3",
+        "label": "AC-2287*",
+        "role": "node",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "id": "n4",
+        "label": "AC-3391*",
+        "role": "node",
+        "x": 90,
+        "y": 150
+      },
+      {
+        "id": "n5",
+        "label": "Ext. wallet",
+        "role": "destination",
+        "x": 350,
+        "y": 90
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "$14,200"
+      },
+      {
+        "from": "n3",
+        "to": "n1",
+        "label": "$9,800"
+      },
+      {
+        "from": "n4",
+        "to": "n1",
+        "label": "$12,100"
+      },
+      {
+        "from": "n1",
+        "to": "n5",
+        "label": "$48,900"
+      }
+    ]
+  },
+  {
+    "id": "FC-2026-0121",
+    "typology": "Structuring",
+    "entity": "Blue Harbor Imports",
+    "acct": "AC-8837",
+    "riskScore": 55,
+    "status": "Pending SAR",
+    "amount": 19850,
+    "opened": "2026-06-11",
+    "narrative": "Two related entities under common ownership each deposited amounts just under the reporting threshold on the same business day, at the same branch.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-8837",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "AC-8838 (related)",
+        "role": "node",
+        "x": 100,
+        "y": 60
+      },
+      {
+        "id": "n3",
+        "label": "Branch 09",
+        "role": "node",
+        "x": 330,
+        "y": 90
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "shared owner"
+      },
+      {
+        "from": "n1",
+        "to": "n3",
+        "label": "$9,850"
+      }
+    ]
+  },
+  {
+    "id": "FC-2026-0118",
+    "typology": "Account Takeover",
+    "entity": "S. Whitfield",
+    "acct": "AC-1156",
+    "riskScore": 90,
+    "status": "Open",
+    "amount": 26700,
+    "opened": "2026-06-08",
+    "narrative": "SIM-swap detected via carrier alert; email and mailing address changed within minutes, followed by a maxed-out wire to a newly added external beneficiary.",
+    "nodes": [
+      {
+        "id": "n1",
+        "label": "AC-1156",
+        "role": "subject",
+        "x": 210,
+        "y": 90
+      },
+      {
+        "id": "n2",
+        "label": "SIM swap",
+        "role": "flag",
+        "x": 90,
+        "y": 40
+      },
+      {
+        "id": "n3",
+        "label": "Addr. change",
+        "role": "flag",
+        "x": 90,
+        "y": 140
+      },
+      {
+        "id": "n4",
+        "label": "New beneficiary",
+        "role": "destination",
+        "x": 350,
+        "y": 90
+      }
+    ],
+    "edges": [
+      {
+        "from": "n2",
+        "to": "n1",
+        "label": "carrier alert"
+      },
+      {
+        "from": "n3",
+        "to": "n1",
+        "label": "+4min"
+      },
+      {
+        "from": "n1",
+        "to": "n4",
+        "label": "$26,700"
+      }
+    ]
+  }
+];
 
 const ROLE_COLOR = {
   subject: "#d6493a",
