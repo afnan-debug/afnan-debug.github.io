@@ -452,3 +452,21 @@ a { color: inherit; }
   }
   .td-entity .name { font-size: 14px; }
 }
+
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial;
+}
+
+.card{
+    background:#1e293b;
+    padding:25px;
+    border-radius:20px;
+    margin:20px;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
