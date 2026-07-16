@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fraud Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <h1>Transaction Monitoring Dashboard</h1>
+
+    <canvas id="chart"></canvas>
+
+    <script>
+        const ctx = document.getElementById('chart');
+
+        new Chart(ctx,{
+            type:'bar',
+            data:{
+                labels:['Wire Fraud','Money Mule','Structuring'],
+                datasets:[{
+                    label:'Open Alerts',
+                    data:[14,9,6]
+                }]
+            }
+        });
+    </script>
+
+</body>
+</html>
