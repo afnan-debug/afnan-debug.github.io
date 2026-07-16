@@ -470,3 +470,18 @@ body{
 .card:hover{
     transform:translateY(-10px);
 }
+.topnav{
+    display:flex;
+    gap:25px;
+    padding:20px;
+    border-bottom:1px solid #333;
+}
+
+.topnav a{
+    color:#d4af37;
+    text-decoration:none;
+}
+
+.hero{
+    padding:50px 0;
+}
