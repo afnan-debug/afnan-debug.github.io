@@ -1,0 +1,20 @@
+<h1>Case Investigation Simulator</h1>
+
+<h2>Case #001 - Potential Money Mule</h2>
+
+<p>
+Five ACH credits totaling $18,700 arrive from unrelated parties.
+Funds are wired internationally within 24 hours.
+</p>
+
+<button onclick="decision()">Reveal Analysis</button>
+
+<div id="answer"></div>
+
+<script>
+function decision(){
+    document.getElementById("answer").innerHTML =
+    "<h3>Escalate Investigation</h3>" +
+    "<p>Indicators include funnel account behavior and rapid movement of funds.</p>";
+}
+</script>
