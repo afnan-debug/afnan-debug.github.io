@@ -47,3 +47,38 @@ document.getElementById("chatWindow").innerHTML +=
 document.getElementById("userInput").value="";
 
 }
+function investigate(){
+
+document.getElementById("result").innerHTML = `
+
+<h3>Investigation Steps</h3>
+
+✅ Review Customer KYC
+
+<br>
+
+✅ Verify Source of Funds
+
+<br>
+
+✅ Compare Historical Activity
+
+<br>
+
+✅ Review Beneficiary
+
+<br>
+
+✅ Look for Structuring
+
+<br>
+
+✅ Determine Whether SAR Escalation Is Required
+
+<br><br>
+
+<b>Risk Rating: HIGH</b>
+
+`;
+
+}
