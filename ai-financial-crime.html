@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Financial Crime Investigation Lab | Afnan</title>
+
+  <link rel="stylesheet" href="ai-financial-crime.css">
+</head>
+
+<body>
+
+<header class="hero">
+
+  <div class="nav">
+    <a href="index.html">← Back to Portfolio</a>
+  </div>
+
+  <div class="hero-content">
+
+    <div class="tag">
+      AI × AML × FRAUD INVESTIGATION
+    </div>
+
+    <h1>
+      AI Financial Crime
+      <span>Investigation Lab</span>
+    </h1>
+
+    <p>
+      An interactive simulation demonstrating how AI can create new
+      financial-crime risks — and how investigators can use technology
+      without losing human judgment.
+    </p>
+
+    <button onclick="startCase()">
+      🚨 Investigate the Case
+    </button>
+
+  </div>
+
+</header>
+
+
+<main id="case" class="hidden">
+
+  <!-- CASE OVERVIEW -->
+
+  <section class="case-overview">
+
+    <div>
+      <small>CASE ID</small>
+      <strong>AML-AI-2026-0813</strong>
+    </div>
+
+    <div>
+      <small>CUSTOMER</small>
+      <strong>Daniel Morgan</strong>
+    </div>
+
+    <div>
+      <small>PROFILE</small>
+      <strong>Low Historical Risk</strong>
+    </div>
+
+    <div>
+      <small>INITIAL RISK</small>
+      <strong id="risk">18</strong>
+    </div>
+
+  </section>
+
+
+  <!-- INTRO -->
+
+  <section class="card">
+
+    <div class="section-title">
+      <span>01</span>
+      Transaction Monitoring Alert
+    </div>
+
+    <h2>Why did the system generate this alert?</h2>
+
+    <p>
+      The customer's historical monthly transaction volume was approximately
+      <strong>$4,200</strong>.
+    </p>
+
+    <p>
+      During the most recent 30-day period, activity increased to
+      <strong>$87,430</strong> and involved multiple newly observed
+      counterparties.
+    </p>
+
+    <div class="stats">
+
+      <div>
+        <small>Historical Volume</small>
+        <strong>$4,200</strong>
+      </div>
+
+      <div>
+        <small>Current Volume</small>
+        <strong>$87,430</strong>
+      </div>
+
+      <div>
+        <small>New Counterparties</small>
+        <strong>14</strong>
+      </div>
+
+      <div>
+        <small>Behavior Change</small>
+        <strong>+1,982%</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- TRANSACTIONS -->
+
+  <section class="card">
+
+    <div class="section-title">
+      <span>02</span>
+      Transaction Timeline
+    </div>
+
+    <div id="transactions"></div>
+
+  </section>
+
+
+  <!-- AI RISKS -->
+
+  <section class="card">
+
+    <div class="section-title">
+      <span>03</span>
+      AI-Enabled Risk Indicators
+    </div>
+
+    <p class="description">
+      These are investigative leads. They are not proof of criminal activity.
+    </p>
+
+    <div class="risk-grid">
+
+      <div class="risk-card high">
+
+        <div class="risk-header">
+          <span>HIGH</span>
+          🤖
+        </div>
+
+        <h3>Potential Synthetic Identity</h3>
+
+        <p>
+          Identity attributes appear inconsistent across available records.
+        </p>
+
+      </div>
+
+
+      <div class="risk-card high">
+
+        <div class="risk-header">
+          <span>HIGH</span>
+          🎭
+        </div>
+
+        <h3>Deepfake Concern</h3>
+
+        <p>
+          A remote verification event contains characteristics requiring
+          additional human verification.
+        </p>
+
+      </div>
+
+
+      <div class="risk-card medium">
+
+        <div class="risk-header">
+          <span>MEDIUM</span>
+          📈
+        </div>
+
+        <h3>Behavioral Change</h3>
+
+        <p>
+          Transaction behavior materially differs from the customer's
+          historical profile.
+        </p>
+
+      </div>
+
+
+      <div class="risk-card high">
+
+        <div class="risk-header">
+          <span>HIGH</span>
+          🕸️
+        </div>
+
+        <h3>Network Expansion</h3>
+
+        <p>
+          Multiple new relationships appeared within a compressed period.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- NETWORK -->
+
+  <section class="card">
+
+    <div class="section-title">
+      <span>04</span>
+      Relationship Analysis
+    </div>
+
+    <p>
+      The investigator asks:
+      <strong>
+        "Are these transactions isolated events, or part of a larger network?"
+      </strong>
+    </p>
+
+    <div class="network">
+
+      <div class="node customer">
+        DANIEL<br>MORGAN
+      </div>
+
+      <div class="line">$18.5K</div>
+
+      <div class="node">
+        ACCOUNT<br>A
+      </div>
+
+      <div class="line">$12.9K</div>
+
+      <div class="node">
+        ACCOUNT<br>B
+      </div>
+
+      <div class="line">$9.7K</div>
+
+      <div class="node">
+        ACCOUNT<br>C
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- AI ANALYSIS -->
+
+  <section class="card ai-section">
+
+    <div class="section-title">
+      <span>05</span>
+      AI Investigator Assistant
+    </div>
+
+    <p>
+      The AI system has reviewed the available synthetic case data.
+    </p>
+
+    <button onclick="runAI()">
+      🧠 Run AI Investigation
+    </button>
+
+    <div id="aiOutput" class="ai-output hidden"></div>
+
+  </section>
+
+
+  <!-- INVESTIGATOR DECISION -->
+
+  <section class="card">
+
+    <div class="section-title">
+      <span>06</span>
+      Investigator Decision
+    </div>
+
+    <h2>
+      What would you do with this alert?
+    </h2>
+
+    <div class="decision-grid">
+
+      <button onclick="decision('close')">
+        Close Alert
+      </button>
+
+      <button onclick="decision('monitor')">
+        Continue Monitoring
+      </button>
+
+      <button onclick="decision('escalate')">
+        Escalate Investigation
+      </button>
+
+    </div>
+
+    <div id="decisionOutput"></div>
+
+  </section>
+
+
+  <!-- INVESTIGATOR THINKING -->
+
+  <section class="card">
+
+    <div class="section-title">
+      <span>07</span>
+      Investigator Thinking
+    </div>
+
+    <div class="thinking">
+
+      <div>
+        <strong>1. Establish the baseline</strong>
+        <p>
+          What normally happens in this customer's account?
+        </p>
+      </div>
+
+      <div>
+        <strong>2. Identify the deviation</strong>
+        <p>
+          What changed and when did the change occur?
+        </p>
+      </div>
+
+      <div>
+        <strong>3. Connect the activity</strong>
+        <p>
+          Are apparently unrelated transactions connected?
+        </p>
+      </div>
+
+      <div>
+        <strong>4. Challenge the AI</strong>
+        <p>
+          Is the AI finding supported by independent evidence?
+        </p>
+      </div>
+
+      <div>
+        <strong>5. Make a defensible decision</strong>
+        <p>
+          Can another investigator understand why you reached your conclusion?
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CASE CONCLUSION -->
+
+  <section class="conclusion">
+
+    <div class="tag">
+      INVESTIGATOR TAKEAWAY
+    </div>
+
+    <h2>
+      AI doesn't replace the investigator.
+    </h2>
+
+    <h3>
+      It changes what the investigator needs to investigate.
+    </h3>
+
+    <p>
+      Modern financial-crime investigators need to understand both
+      traditional AML red flags and emerging technology-enabled risks.
+    </p>
+
+  </section>
+
+
+  <section class="disclaimer">
+
+    <strong>Educational Simulation</strong>
+
+    <p>
+      All customers, transactions and investigative findings in this
+      demonstration are fictional. The application is designed to
+      demonstrate investigative methodology and responsible use of AI.
+    </p>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  <a href="index.html">← Return to Afnan's Portfolio</a>
+
+  <p>
+    AI Financial Crime Investigation Lab
+  </p>
+
+</footer>
+
+
+<script src="ai-financial-crime.js"></script>
+
+</body>
+</html>
