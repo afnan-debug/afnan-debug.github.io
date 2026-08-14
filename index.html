@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyber Financial Crime Defense Lab</title>
+  <title>Financial Crime & Cybersecurity Threat Investigation Lab</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
   <div>
     <span class="eyebrow">AFNAN-DEBUG • INVESTIGATION LAB</span>
-    <h1>Cyber Financial Crime Defense Lab</h1>
-    <p>Connecting cybersecurity signals to fraud & AML investigation decisions.</p>
+    <h1>Financial Crime & Cybersecurity Threat Investigation Lab</h1>
+    <p>
+Connecting cybersecurity threats, fraud signals, and financial activity
+to support AML and financial-crime investigations.
+</p>
   </div>
   <a class="back" href="../">← Portfolio</a>
 </header>
@@ -20,8 +23,14 @@
   <section class="hero card">
     <div>
       <span class="pill">SYNTHETIC • DEFENSIVE • EDUCATIONAL</span>
-      <h2>When a cyber event becomes a financial-crime event</h2>
-      <p>A compromised credential may be only the first signal. Investigators can connect identity, device, session, beneficiary and transaction behavior to determine whether an event deserves escalation.</p>
+      <h2>Where Cybersecurity Threats Meet Financial Crime</h2>
+      <p>
+A cybersecurity event does not always end with compromised access.
+Account takeover, credential abuse, suspicious devices, unusual sessions,
+and unauthorized transactions can become financial-crime indicators.
+Investigators can correlate cyber and financial signals to identify risk,
+investigate activity, and determine appropriate escalation.
+</p>
       <button id="runScenario">Run simulated investigation</button>
     </div>
     <div class="flow">
@@ -30,6 +39,47 @@
   </section>
 
   <section class="metrics">
+    <section class="card">
+    <div class="section-head">
+        <h3>How Cyber Threats Connect to Financial Crime</h3>
+        <span>investigative correlation</span>
+    </div>
+
+    <div class="columns">
+
+        <div>
+            <b>1. Cyber Threat</b>
+            <p>
+                Phishing, credential compromise, account takeover,
+                suspicious devices, or abnormal authentication.
+            </p>
+        </div>
+
+        <div>
+            <b>2. Behavioral Signal</b>
+            <p>
+                Unusual login patterns, new devices, geographic anomalies,
+                session changes, or abnormal customer behavior.
+            </p>
+        </div>
+
+        <div>
+            <b>3. Financial Activity</b>
+            <p>
+                Rapid transfers, unusual beneficiaries, transaction anomalies,
+                mule-account indicators, or movement of funds.
+            </p>
+        </div>
+
+        <div>
+            <b>4. Investigator Decision</b>
+            <p>
+                Correlate the evidence, assess risk, document findings,
+                and determine whether escalation is appropriate.
+            </p>
+        </div>
+
+    </div>
     <div class="metric card"><small>Cyber Signals</small><strong id="cyberScore">--</strong><span>authentication/device</span></div>
     <div class="metric card"><small>Financial Signals</small><strong id="financialScore">--</strong><span>transaction behavior</span></div>
     <div class="metric card"><small>Combined Risk</small><strong id="combinedScore">--</strong><span id="riskLabel">Awaiting case</span></div>
@@ -43,7 +93,7 @@
     </div>
 
     <div class="card">
-      <div class="section-head"><h3>Risk engine</h3><span>transparent scoring</span></div>
+      <div class="section-head"><h3>Cyber + Financial Crime Risk Engine</h3><span>investigator-support scoring</span></div>
       <div class="score-row"><span>Cybersecurity</span><div class="bar"><i id="cyberBar"></i></div><b id="cyberPct">0</b></div>
       <div class="score-row"><span>Financial crime</span><div class="bar"><i id="financialBar"></i></div><b id="financialPct">0</b></div>
       <div class="score-row"><span>Combined</span><div class="bar"><i id="combinedBar"></i></div><b id="combinedPct">0</b></div>
@@ -62,18 +112,53 @@
     </div>
     <p id="decisionFeedback" class="feedback">The risk engine supports the investigator; it does not make a final legal or regulatory determination.</p>
   </section>
+    <section class="card methodology">
 
-  <section class="card methodology">
-    <h3>Investigator mindset</h3>
+    <h3>My Investigator Mindset</h3>
+
     <div class="columns">
-      <div><b>1. Detect</b><p>Identify unusual authentication, device and transaction signals.</p></div>
-      <div><b>2. Correlate</b><p>Connect cyber telemetry with customer and transaction behavior.</p></div>
-      <div><b>3. Investigate</b><p>Compare the event against expected behavior and available evidence.</p></div>
-      <div><b>4. Escalate</b><p>Route high-risk cases for deeper review according to institutional procedures.</p></div>
-    </div>
-  </section>
 
-  <p class="disclaimer">Portfolio demonstration only. No real customer data, credentials, IP addresses or production systems are used.</p>
+        <div>
+            <b>1. Detect</b>
+            <p>
+                Identify unusual authentication, device, session,
+                customer, and transaction signals.
+            </p>
+        </div>
+
+        <div>
+            <b>2. Correlate</b>
+            <p>
+                Connect cybersecurity indicators with customer behavior,
+                transaction activity, and other available evidence.
+            </p>
+        </div>
+
+        <div>
+            <b>3. Investigate</b>
+            <p>
+                Determine whether the activity is explainable,
+                suspicious, or inconsistent with expected behavior.
+            </p>
+        </div>
+
+        <div>
+            <b>4. Escalate</b>
+            <p>
+                Document the findings and route higher-risk activity
+                for additional review according to applicable procedures.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+  <p class="disclaimer">Portfolio demonstration only. All cases and data are synthetic.
+    No real customer information, credentials, IP addresses, financial
+    accounts, or production systems are used. Risk scores are illustrative
+    and are intended to demonstrate investigative reasoning, not make
+    legal, regulatory, or automated financial-crime determinations.</p>
 </main>
 <script src="app.js"></script>
 </body>
