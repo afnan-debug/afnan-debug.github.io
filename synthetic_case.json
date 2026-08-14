@@ -1,0 +1,12 @@
+{
+  "case_id": "FC-2026-0042",
+  "customer_id": "SYNTHETIC-1042",
+  "failed_logins": 5,
+  "new_device": true,
+  "new_beneficiary": true,
+  "unusual_ip": true,
+  "amount": 18500,
+  "typical_amount": 2000,
+  "rapid_transfer_after_login": true,
+  "high_risk_beneficiary": false
+}
