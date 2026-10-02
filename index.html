@@ -1,165 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Financial Crime & Cybersecurity Threat Investigation Lab</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Captain's Deck | Financial Crime & Cybersecurity Investigation Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0d1b26; --panel:#142633; --panel2:#1b3242; --line:#2a4558;
+  --ice:#dce8ef; --mute:#8aa4b5; --amber:#f2a93b; --red:#ec5b5b; --go:#62c096;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--ice);font:16px/1.55 "Public Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;letter-spacing:.01em;line-height:1.05;margin:0}
+a{color:var(--amber)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* Top bar */
+.bar{border-bottom:1px solid var(--line);background:var(--panel)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:12px;flex-wrap:wrap}
+.bar a{text-decoration:none;font-weight:600}
+.callsign{font-family:"Barlow Condensed",sans-serif;font-size:1.1rem;color:var(--mute)}
+
+/* Hero */
+.hero{padding:56px 0 36px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem);max-width:14ch}
+.hero p{max-width:60ch;color:var(--mute);font-size:1.1rem;margin:16px 0 0}
+.route{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;font-family:"Barlow Condensed",sans-serif;font-size:1.15rem}
+.route span{border:1px solid var(--line);padding:4px 12px;border-radius:999px;background:var(--panel)}
+.route span.on{border-color:var(--amber);color:var(--amber)}
+
+/* Layout */
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;padding-bottom:48px}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}
+.card h2{font-size:1.7rem;margin-bottom:4px}
+.sub{color:var(--mute);font-size:.92rem;margin:0 0 14px}
+
+/* Manifest */
+.tx{display:block;width:100%;text-align:left;background:var(--panel2);color:inherit;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font:inherit}
+.tx:hover{border-color:var(--mute)}
+.tx[aria-pressed="true"]{border-color:var(--amber);box-shadow:inset 3px 0 0 var(--amber)}
+.tx b{font-family:"Barlow Condensed",sans-serif;font-size:1.25rem}
+.tx small{display:block;color:var(--mute)}
+details{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600}
+form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+form label{font-size:.85rem;color:var(--mute);display:flex;flex-direction:column;gap:4px}
+form .chk{flex-direction:row;align-items:center;gap:8px;color:var(--ice)}
+form .full{grid-column:1/-1}
+input[type=number],select{background:var(--night);color:var(--ice);border:1px solid var(--line);border-radius:6px;padding:8px;font:inherit}
+button.primary{background:var(--amber);color:#1b1305;border:0;border-radius:6px;padding:10px 14px;font:600 1rem "Public Sans",sans-serif;cursor:pointer}
+
+/* Checklist */
+.phase{margin-top:18px}
+.phase h3{font-size:1.3rem;color:var(--amber);margin-bottom:6px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:8px;border:1px solid transparent}
+.item:hover{background:var(--panel2)}
+.item input{margin-top:5px;width:18px;height:18px;accent-color:var(--amber)}
+.item.flag{border-color:#5b4a22;background:#251f12}
+.badge{display:inline-block;margin-left:8px;font-size:.75rem;font-weight:600;color:#1b1305;background:var(--amber);border-radius:4px;padding:1px 7px}
+.why{display:block;color:var(--mute);font-size:.85rem}
+
+/* Instruments */
+.panel-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 4px}
+.gauge{background:var(--night);border:1px solid var(--line);border-radius:8px;padding:12px}
+.gauge .n{font-family:"Barlow Condensed",sans-serif;font-size:2.4rem;line-height:1}
+.track{height:8px;background:var(--panel2);border-radius:4px;margin-top:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--go);transition:width .35s,background .35s}
+#verdict{margin:16px 0 6px;padding:14px;border-radius:8px;border:1px solid var(--line);background:var(--night)}
+#verdict strong{font-family:"Barlow Condensed",sans-serif;font-size:1.6rem}
+.decide{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.decide button{flex:1 1 150px;background:var(--panel2);color:var(--ice);border:1px solid var(--line);border-radius:8px;padding:11px;font:600 .95rem "Public Sans",sans-serif;cursor:pointer}
+.decide button:hover{border-color:var(--amber)}
+#log{list-style:none;margin:10px 0 0;padding:0;font-size:.9rem;color:var(--mute)}
+#log li{padding:6px 0;border-top:1px solid var(--line)}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--mute);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
-<header class="topbar">
-  <div>
-    <span class="eyebrow">AFNAN-DEBUG • INVESTIGATION LAB</span>
-    <h1>Financial Crime & Cybersecurity Threat Investigation Lab</h1>
-    <p>
-Connecting cybersecurity threats, fraud signals, and financial activity
-to support AML and financial-crime investigations.
-</p>
+
+<div class="bar"><div class="wrap">
+  <a href="https://afnan-debug.github.io/">← Portfolio</a>
+  <span class="callsign">Synthetic data · Defensive · Educational</span>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <h1>Captain's Deck: transaction review</h1>
+  <p>You are the captain. Run the pre-flight checks, let the AI co-pilot scan the transaction, then make the call: clear it, hold it, or divert it to a financial-crime investigation.</p>
+  <div class="route" aria-label="Investigation route">
+    <span>Identity</span><span>Device</span><span>Session</span><span>Transaction</span><span class="on">Risk</span>
   </div>
-  <a class="back" href="../">← Portfolio</a>
-</header>
+</div></header>
 
-<main>
-  <section class="hero card">
-    <div>
-      <span class="pill">SYNTHETIC • DEFENSIVE • EDUCATIONAL</span>
-      <h2>Where Cybersecurity Threats Meet Financial Crime</h2>
-      <p>
-A cybersecurity event does not always end with compromised access.
-Account takeover, credential abuse, suspicious devices, unusual sessions,
-and unauthorized transactions can become financial-crime indicators.
-Investigators can correlate cyber and financial signals to identify risk,
-investigate activity, and determine appropriate escalation.
-</p>
-      <button id="runScenario">Run simulated investigation</button>
-    </div>
-    <div class="flow">
-      <span>Identity</span><b>→</b><span>Device</span><b>→</b><span>Session</span><b>→</b><span>Transaction</span><b>→</b><span>Risk</span>
-    </div>
+<main class="wrap grid">
+
+  <!-- LEFT: manifest -->
+  <section class="card" aria-labelledby="mf">
+    <h2 id="mf">Flight manifest</h2>
+    <p class="sub">Pick a transaction. The co-pilot scans it and flags checks for you.</p>
+    <div id="manifest"></div>
+
+    <details>
+      <summary>Add your own synthetic transaction</summary>
+      <form id="addForm">
+        <label>Amount ($)<input type="number" name="amount" min="1" value="9500" required></label>
+        <label>Customer's usual amount ($)<input type="number" name="usual" min="1" value="800" required></label>
+        <label>Hour of day (0-23)<input type="number" name="hour" min="0" max="23" value="2" required></label>
+        <label>Transfers in last 24h<input type="number" name="count" min="1" value="5" required></label>
+        <label class="full">Destination
+          <select name="dest"><option value="domestic">Domestic</option><option value="high-risk">High-risk jurisdiction</option></select>
+        </label>
+        <label class="chk"><input type="checkbox" name="newDevice"> New device</label>
+        <label class="chk"><input type="checkbox" name="geo"> Unusual login location</label>
+        <label class="chk"><input type="checkbox" name="fails"> Failed logins / reset</label>
+        <label class="chk"><input type="checkbox" name="newBen"> New beneficiary</label>
+        <label class="chk full"><input type="checkbox" name="passThru"> Funds left soon after arriving</label>
+        <button class="primary full" type="submit">Add to manifest</button>
+      </form>
+    </details>
   </section>
 
-  <section class="metrics">
-    <section class="card">
-    <div class="section-head">
-        <h3>How Cyber Threats Connect to Financial Crime</h3>
-        <span>investigative correlation</span>
+  <!-- RIGHT: cockpit -->
+  <section class="card" aria-labelledby="ck">
+    <h2 id="ck">Pre-flight checklist</h2>
+    <p class="sub" id="current">Select a transaction to begin. You can tick or untick any check yourself.</p>
+
+    <div class="panel-row">
+      <div class="gauge"><div>Cyber signals</div><div class="n" id="sCyber">0</div><div class="track"><div class="fill" id="fCyber"></div></div></div>
+      <div class="gauge"><div>Financial signals</div><div class="n" id="sFin">0</div><div class="track"><div class="fill" id="fFin"></div></div></div>
     </div>
 
-    <div class="columns">
+    <div id="checklist"></div>
 
-        <div>
-            <b>1. Cyber Threat</b>
-            <p>
-                Phishing, credential compromise, account takeover,
-                suspicious devices, or abnormal authentication.
-            </p>
-        </div>
+    <div id="verdict" aria-live="polite"><strong>Awaiting transaction</strong><span class="why">Combined risk: 0 / 100</span></div>
 
-        <div>
-            <b>2. Behavioral Signal</b>
-            <p>
-                Unusual login patterns, new devices, geographic anomalies,
-                session changes, or abnormal customer behavior.
-            </p>
-        </div>
-
-        <div>
-            <b>3. Financial Activity</b>
-            <p>
-                Rapid transfers, unusual beneficiaries, transaction anomalies,
-                mule-account indicators, or movement of funds.
-            </p>
-        </div>
-
-        <div>
-            <b>4. Investigator Decision</b>
-            <p>
-                Correlate the evidence, assess risk, document findings,
-                and determine whether escalation is appropriate.
-            </p>
-        </div>
-
+    <div class="decide" role="group" aria-label="Captain's decision">
+      <button data-d="Cleared for departure: closed, insufficient evidence">Clear it</button>
+      <button data-d="Hold on the ground: monitor and request more evidence">Hold it</button>
+      <button data-d="Divert: escalated to financial-crime investigation">Divert (escalate)</button>
     </div>
-    <div class="metric card"><small>Cyber Signals</small><strong id="cyberScore">--</strong><span>authentication/device</span></div>
-    <div class="metric card"><small>Financial Signals</small><strong id="financialScore">--</strong><span>transaction behavior</span></div>
-    <div class="metric card"><small>Combined Risk</small><strong id="combinedScore">--</strong><span id="riskLabel">Awaiting case</span></div>
-    <div class="metric card"><small>Decision</small><strong id="decision">--</strong><span>investigator triage</span></div>
+    <ul id="log" aria-label="Flight log"></ul>
   </section>
-
-  <section class="grid">
-    <div class="card">
-      <div class="section-head"><h3>Case timeline</h3><span id="caseId">CASE —</span></div>
-      <div id="timeline" class="timeline"><p class="muted">Run the simulated investigation to populate evidence.</p></div>
-    </div>
-
-    <div class="card">
-      <div class="section-head"><h3>Cyber + Financial Crime Risk Engine</h3><span>investigator-support scoring</span></div>
-      <div class="score-row"><span>Cybersecurity</span><div class="bar"><i id="cyberBar"></i></div><b id="cyberPct">0</b></div>
-      <div class="score-row"><span>Financial crime</span><div class="bar"><i id="financialBar"></i></div><b id="financialPct">0</b></div>
-      <div class="score-row"><span>Combined</span><div class="bar"><i id="combinedBar"></i></div><b id="combinedPct">0</b></div>
-      <hr>
-      <h4>Why did the score move?</h4>
-      <ul id="reasons" class="reasons"><li>Awaiting synthetic evidence.</li></ul>
-    </div>
-  </section>
-
-  <section class="card">
-    <div class="section-head"><h3>Investigator decision</h3><span>human-in-the-loop</span></div>
-    <div class="decision-grid">
-      <button class="choice" data-choice="close">Close / insufficient evidence</button>
-      <button class="choice" data-choice="monitor">Monitor / request more evidence</button>
-      <button class="choice" data-choice="escalate">Escalate to financial-crime investigation</button>
-    </div>
-    <p id="decisionFeedback" class="feedback">The risk engine supports the investigator; it does not make a final legal or regulatory determination.</p>
-  </section>
-    <section class="card methodology">
-
-    <h3>My Investigator Mindset</h3>
-
-    <div class="columns">
-
-        <div>
-            <b>1. Detect</b>
-            <p>
-                Identify unusual authentication, device, session,
-                customer, and transaction signals.
-            </p>
-        </div>
-
-        <div>
-            <b>2. Correlate</b>
-            <p>
-                Connect cybersecurity indicators with customer behavior,
-                transaction activity, and other available evidence.
-            </p>
-        </div>
-
-        <div>
-            <b>3. Investigate</b>
-            <p>
-                Determine whether the activity is explainable,
-                suspicious, or inconsistent with expected behavior.
-            </p>
-        </div>
-
-        <div>
-            <b>4. Escalate</b>
-            <p>
-                Document the findings and route higher-risk activity
-                for additional review according to applicable procedures.
-            </p>
-        </div>
-
-    </div>
-
-</section>
-
-  <p class="disclaimer">Portfolio demonstration only. All cases and data are synthetic.
-    No real customer information, credentials, IP addresses, financial
-    accounts, or production systems are used. Risk scores are illustrative
-    and are intended to demonstrate investigative reasoning, not make
-    legal, regulatory, or automated financial-crime determinations.</p>
 </main>
-<script src="app.js"></script>
+
+<footer><div class="wrap">
+  Portfolio demonstration only. All cases and data are synthetic. No real customer information, credentials, IP addresses, financial accounts, or production systems are used. The co-pilot's scores are illustrative rules that support the investigator; they do not make legal, regulatory, or automated financial-crime determinations. The captain always makes the final decision.
+</div></footer>
+
+<script>
+/* ---------- Checklist definition ---------- */
+const CHECKS = [
+  {id:'newDevice', phase:'Pre-flight: identity and access', k:'cyber', w:15, t:'Login from a new or unrecognized device'},
+  {id:'geo',       phase:'Pre-flight: identity and access', k:'cyber', w:15, t:'Login location differs from the customer\'s usual pattern'},
+  {id:'fails',     phase:'Pre-flight: identity and access', k:'cyber', w:15, t:'Failed logins or a password reset before the transaction'},
+  {id:'newBen',    phase:'Takeoff: the transaction',        k:'fin',   w:15, t:'Beneficiary was added in the last 24 hours'},
+  {id:'large',     phase:'Takeoff: the transaction',        k:'fin',   w:15, t:'Amount is far above the customer\'s usual activity'},
+  {id:'round',     phase:'Takeoff: the transaction',        k:'fin',   w:10, t:'Amount sits just under a reporting threshold'},
+  {id:'night',     phase:'Takeoff: the transaction',        k:'fin',   w:8,  t:'Initiated at an unusual hour'},
+  {id:'highRisk',  phase:'Takeoff: the transaction',        k:'fin',   w:12, t:'Destination is a high-risk jurisdiction'},
+  {id:'velocity',  phase:'Cruise: behavior over time',      k:'fin',   w:12, t:'Several transfers in a short window'},
+  {id:'passThru',  phase:'Cruise: behavior over time',      k:'fin',   w:15, t:'Funds moved out soon after arriving (possible mule pattern)'},
+  {id:'noStory',   phase:'Cruise: behavior over time',      k:'fin',   w:10, t:'No plausible explanation in the customer profile (captain\'s judgment)'}
+];
+
+/* ---------- AI co-pilot: rule-based detector ---------- */
+function copilot(tx){
+  const hits = {};
+  if (tx.newDevice) hits.newDevice = 'Device not seen on this account before.';
+  if (tx.geo)       hits.geo = 'Session location is inconsistent with history.';
+  if (tx.fails)     hits.fails = 'Authentication friction before the transfer suggests credential testing.';
+  if (tx.newBen)    hits.newBen = 'Money is going to a payee created very recently.';
+  if (tx.amount >= 5 * tx.usual) hits.large = `Amount is ${(tx.amount/tx.usual).toFixed(1)}x the customer's usual.`;
+  if (tx.amount >= 9000 && tx.amount < 10000) hits.round = 'Amount falls just below a common $10,000 reporting level.';
+  if (tx.hour < 5 || tx.hour >= 23) hits.night = `Initiated at ${String(tx.hour).padStart(2,'0')}:00, outside normal hours.`;
+  if (tx.dest === 'high-risk') hits.highRisk = 'Destination is flagged as higher risk.';
+  if (tx.count >= 4) hits.velocity = `${tx.count} transfers within 24 hours.`;
+  if (tx.passThru)  hits.passThru = 'Funds left shortly after arriving, a classic pass-through sign.';
+  return hits;
+}
+
+/* ---------- Synthetic sample transactions ---------- */
+let TX = [
+  {id:'TX-1041', amount:49500, usual:800,  hour:3,  count:6, dest:'domestic',  newDevice:1, geo:1, fails:1, newBen:1, passThru:1},
+  {id:'TX-1042', amount:120,   usual:100,  hour:14, count:1, dest:'domestic',  newDevice:0, geo:0, fails:0, newBen:0, passThru:0},
+  {id:'TX-1043', amount:9900,  usual:1500, hour:23, count:4, dest:'high-risk', newDevice:0, geo:0, fails:0, newBen:1, passThru:0},
+  {id:'TX-1044', amount:2300,  usual:2000, hour:10, count:2, dest:'domestic',  newDevice:1, geo:0, fails:0, newBen:0, passThru:0}
+];
+let current = null, hits = {}, state = {};
+
+const $ = s => document.querySelector(s);
+
+function renderManifest(){
+  const box = $('#manifest'); box.replaceChildren();
+  TX.forEach(tx=>{
+    const b = document.createElement('button');
+    b.className = 'tx'; b.type = 'button';
+    b.setAttribute('aria-pressed', current && current.id === tx.id);
+    const t = document.createElement('b'); t.textContent = tx.id;
+    const s = document.createElement('small');
+    s.textContent = `$${tx.amount.toLocaleString()} · ${tx.dest} · ${String(tx.hour).padStart(2,'0')}:00`;
+    b.append(t, s);
+    b.onclick = () => select(tx);
+    box.append(b);
+  });
+}
+
+function select(tx){
+  current = tx; hits = copilot(tx); state = {};
+  CHECKS.forEach(c => state[c.id] = !!hits[c.id]);
+  $('#current').textContent = `Reviewing ${tx.id}. The co-pilot pre-ticked what it found; add your own judgment.`;
+  renderManifest(); renderChecklist(); score();
+}
+
+function renderChecklist(){
+  const box = $('#checklist'); box.replaceChildren();
+  let lastPhase = null, phaseEl;
+  CHECKS.forEach(c=>{
+    if (c.phase !== lastPhase){
+      phaseEl = document.createElement('div'); phaseEl.className = 'phase';
+      const h = document.createElement('h3'); h.textContent = c.phase;
+      phaseEl.append(h); box.append(phaseEl); lastPhase = c.phase;
+    }
+    const row = document.createElement('label');
+    row.className = 'item' + (hits[c.id] ? ' flag' : '');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.checked = state[c.id];
+    cb.onchange = () => { state[c.id] = cb.checked; score(); };
+    const txt = document.createElement('span');
+    txt.textContent = c.t;
+    if (hits[c.id]){
+      const bd = document.createElement('span'); bd.className = 'badge'; bd.textContent = 'Co-pilot flag';
+      const why = document.createElement('span'); why.className = 'why'; why.textContent = hits[c.id];
+      txt.append(bd, why);
+    }
+    row.append(cb, txt); phaseEl.append(row);
+  });
+}
+
+function score(){
+  let cy = 0, fi = 0;
+  CHECKS.forEach(c => { if (state[c.id]) c.k === 'cyber' ? cy += c.w : fi += c.w; });
+  cy = Math.min(cy, 45); fi = Math.min(fi, 100);
+  const total = Math.min(100, Math.round(cy + fi * 0.7));
+  setGauge('Cyber', cy, 45); setGauge('Fin', fi, 100);
+  let label, color, msg;
+  if (!current){ label = 'Awaiting transaction'; color = 'var(--mute)'; msg = ''; }
+  else if (total < 30){ label = 'Clear skies'; color = 'var(--go)'; msg = 'Low risk. Closing with documented reasons is reasonable.'; }
+  else if (total < 60){ label = 'Turbulence ahead'; color = 'var(--amber)'; msg = 'Moderate risk. Consider monitoring or requesting more evidence.'; }
+  else { label = 'Mayday: divert'; color = 'var(--red)'; msg = 'High risk. Consider escalating to a financial-crime investigation.'; }
+  const v = $('#verdict'); v.replaceChildren();
+  const s = document.createElement('strong'); s.textContent = label; s.style.color = color;
+  const w = document.createElement('span'); w.className = 'why';
+  w.textContent = `Combined risk: ${total} / 100. ${msg}`;
+  v.append(s, w);
+}
+function setGauge(k, val, max){
+  $('#s' + k).textContent = val;
+  const f = $('#f' + k);
+  const pct = Math.min(100, val / max * 100);
+  f.style.width = pct + '%';
+  f.style.background = pct >= 60 ? 'var(--red)' : pct >= 30 ? 'var(--amber)' : 'var(--go)';
+}
+
+/* ---------- Captain's decision log ---------- */
+document.querySelectorAll('.decide button').forEach(b=>{
+  b.onclick = () => {
+    if (!current){ $('#current').textContent = 'Select a transaction before logging a decision.'; return; }
+    const li = document.createElement('li');
+    li.textContent = `${new Date().toLocaleTimeString()} · ${current.id} · ${b.dataset.d}`;
+    $('#log').prepend(li);
+  };
+});
+
+/* ---------- Add custom transaction ---------- */
+$('#addForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const tx = {
+    id: 'TX-' + (1045 + TX.length - 4),
+    amount: +f.get('amount'), usual: +f.get('usual'), hour: +f.get('hour'), count: +f.get('count'),
+    dest: f.get('dest'),
+    newDevice: f.has('newDevice'), geo: f.has('geo'), fails: f.has('fails'),
+    newBen: f.has('newBen'), passThru: f.has('passThru')
+  };
+  TX.push(tx); select(tx);
+});
+
+renderManifest(); renderChecklist(); score();
+</script>
 </body>
 </html>
