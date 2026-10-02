@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Co-pilot Lab | Crypto and Cyber Threat Detection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0d1b26;--panel:#142633;--panel2:#1b3242;--line:#2a4558;--ice:#dce8ef;--mute:#8aa4b5;--amber:#f2a93b;--red:#ec5b5b;--go:#62c096}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--ice);font:16px/1.55 "Public Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;line-height:1.05;margin:0}
+a{color:var(--amber)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.bar{border-bottom:1px solid var(--line);background:var(--panel)}
+.bar .wrap{display:flex;gap:18px;padding:12px 20px;flex-wrap:wrap}
+.bar a{text-decoration:none;font-weight:600}
+.hero{padding:48px 0 28px}
+.hero h1{font-size:clamp(2.4rem,6vw,4.4rem);max-width:16ch}
+.hero p{max-width:62ch;color:var(--mute);font-size:1.08rem;margin:14px 0 0}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin-bottom:28px}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}
+.card h2{font-size:1.7rem;margin-bottom:4px}
+.sub{color:var(--mute);font-size:.92rem;margin:0 0 14px}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.presets button,.btn{background:var(--panel2);color:var(--ice);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font:600 .9rem "Public Sans",sans-serif;cursor:pointer}
+.presets button:hover,.btn:hover{border-color:var(--amber)}
+.field{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin-bottom:10px;font-size:.9rem}
+.field output{color:var(--amber);font-weight:600}
+.field input[type=range]{grid-column:1/-1;accent-color:var(--amber);width:100%}
+.group{margin:16px 0 6px;font-family:"Barlow Condensed",sans-serif;font-size:1.2rem;color:var(--amber)}
+.chk{display:flex;gap:8px;align-items:center;margin:6px 0;font-size:.92rem}
+.chk input{width:18px;height:18px;accent-color:var(--amber)}
+.risk{background:var(--night);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:14px}
+.risk .n{font-family:"Barlow Condensed",sans-serif;font-size:3rem;line-height:1}
+.track{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:8px}
+.fill{height:100%;width:0;transition:width .3s,background .3s}
+.drv{display:grid;grid-template-columns:150px 1fr 44px;gap:8px;align-items:center;font-size:.85rem;margin:6px 0}
+.drv .b{height:10px;border-radius:3px;background:var(--amber)}
+.drv .b.cy{background:var(--red)}
+#story{background:var(--night);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:12px;white-space:pre-wrap;font-size:.92rem;min-height:4em}
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px}
+.type{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:14px}
+.type h3{font-size:1.25rem;color:var(--amber);margin-bottom:6px}
+.type p{margin:4px 0;font-size:.9rem;color:var(--mute)}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;margin-top:20px;color:var(--mute);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+  <a href="https://afnan-debug.github.io/">← Portfolio</a>
+  <a href="index.html">Captain's Deck</a>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <h1>Co-pilot Lab: crypto and cyber threat detection</h1>
+  <p>Cyber attacks often end in crypto cash-outs. Adjust the synthetic wallet case below and watch an explainable risk model show which signals drive the score, then turn them into a case note for the captain.</p>
+</div></header>
+
+<main class="wrap">
+<div class="grid">
+
+  <section class="card" aria-labelledby="in">
+    <h2 id="in">Synthetic case inputs</h2>
+    <p class="sub">Load a preset or move the sliders. Nothing here is real data.</p>
+    <div class="presets" id="presets"></div>
+    <form id="f" onsubmit="return false">
+      <div class="group">On-chain behavior</div>
+      <div id="sliders"></div>
+      <label class="chk"><input type="checkbox" id="sanctioned"> Counterparty is on a sanctions-linked watchlist</label>
+      <label class="chk"><input type="checkbox" id="peel"> Peel-chain pattern (many small splits, one large remainder)</label>
+      <div class="group">Cyber signals</div>
+      <label class="chk"><input type="checkbox" id="phish"> Wallet linked to a phishing or drainer cluster</label>
+      <label class="chk"><input type="checkbox" id="sim"> SIM-swap or account-recovery event before the transfer</label>
+      <label class="chk"><input type="checkbox" id="apikey"> New exchange API key created just before withdrawal</label>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="out">
+    <h2 id="out">Co-pilot assessment</h2>
+    <p class="sub">A small logistic model with visible weights. Every point of the score is explained.</p>
+    <div class="risk" aria-live="polite">
+      <div>Model risk</div>
+      <div class="n" id="pct">0%</div>
+      <div class="track"><div class="fill" id="bar"></div></div>
+      <div id="band" style="margin-top:8px;font-weight:600"></div>
+    </div>
+    <div class="group" style="margin-top:0">Why the score moved</div>
+    <div id="drivers"></div>
+    <div class="group">Case note</div>
+    <div id="story"></div>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button class="btn" id="copy" type="button">Copy note</button>
+      <button class="btn" id="llm" type="button">Ask an LLM co-pilot (optional)</button>
+    </div>
+    <div id="llmOut" class="sub" style="margin-top:10px"></div>
+  </section>
+</div>
+
+<section class="card" aria-labelledby="ty">
+  <h2 id="ty">Crypto laundering patterns the model looks for</h2>
+  <p class="sub">Defensive red flags investigators use. These are patterns to detect, not instructions.</p>
+  <div class="types">
+    <div class="type"><h3>Mixer exposure</h3><p>Funds pass through services built to blur their origin.</p><p>Check: share of value touching mixing services.</p></div>
+    <div class="type"><h3>Chain-hopping</h3><p>Value is swapped across blockchains to break the trail.</p><p>Check: number of cross-chain swaps in a short window.</p></div>
+    <div class="type"><h3>Peel chains</h3><p>A large balance is shaved into many small transfers.</p><p>Check: repeated small splits with one large remainder.</p></div>
+    <div class="type"><h3>Fresh mule wallets</h3><p>New wallets receive and forward funds within hours.</p><p>Check: wallet age and time between inflow and outflow.</p></div>
+    <div class="type"><h3>Cyber-enabled cash-out</h3><p>Account takeover, SIM swaps, or stolen API keys end in a withdrawal.</p><p>Check: security events just before the transfer.</p></div>
+    <div class="type"><h3>Sanctions exposure</h3><p>Direct or indirect links to listed entities.</p><p>Check: hops to a flagged counterparty.</p></div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  Portfolio demonstration only. All cases, wallets, and weights are synthetic and hand-set for teaching. The model is not trained on real data and does not make legal, regulatory, or automated financial-crime determinations. A human investigator makes the final decision.
+</div></footer>
+
+<script>
+/* ---------- Model: weights are hand-set for teaching. Replace with trained values later. ---------- */
+const BIAS = -4.5;
+const FEATURES = [
+  {id:'amount',  label:'Transfer size',          w:1.2, cy:false, slider:{min:100,max:2000000,step:100,val:5000,fmt:v=>'$'+(+v).toLocaleString()}, norm:v=>Math.min(Math.log10(v)/6,1)},
+  {id:'age',     label:'Wallet age (days)',       w:1.0, cy:false, slider:{min:0,max:365,step:1,val:90,fmt:v=>v+' d'}, norm:v=>v<7?1:v<30?0.5:0},
+  {id:'hops',    label:'Hops from source',        w:0.9, cy:false, slider:{min:1,max:12,step:1,val:2,fmt:v=>v}, norm:v=>Math.min(v/8,1)},
+  {id:'mixer',   label:'Mixer exposure',          w:2.2, cy:false, slider:{min:0,max:100,step:5,val:0,fmt:v=>v+'%'}, norm:v=>v/100},
+  {id:'swaps',   label:'Cross-chain swaps',       w:1.3, cy:false, slider:{min:0,max:8,step:1,val:0,fmt:v=>v}, norm:v=>Math.min(v/5,1)},
+  {id:'velocity',label:'Transfers per hour',      w:1.1, cy:false, slider:{min:0,max:30,step:1,val:1,fmt:v=>v}, norm:v=>Math.min(v/20,1)},
+  {id:'sanctioned',label:'Sanctions-linked party',w:3.0, cy:false, norm:v=>v?1:0},
+  {id:'peel',    label:'Peel-chain pattern',      w:1.5, cy:false, norm:v=>v?1:0},
+  {id:'phish',   label:'Phishing-cluster link',   w:1.8, cy:true,  norm:v=>v?1:0},
+  {id:'sim',     label:'SIM-swap / recovery',     w:1.6, cy:true,  norm:v=>v?1:0},
+  {id:'apikey',  label:'New API key',             w:1.4, cy:true,  norm:v=>v?1:0}
+];
+const PRESETS = {
+  'Everyday transfer':   {amount:300,age:400,hops:1,mixer:0,swaps:0,velocity:1,sanctioned:0,peel:0,phish:0,sim:0,apikey:0},
+  'Account takeover cash-out': {amount:48000,age:2,hops:3,mixer:10,swaps:1,velocity:6,sanctioned:0,peel:0,phish:1,sim:1,apikey:1},
+  'Layering run':        {amount:250000,age:5,hops:9,mixer:60,swaps:4,velocity:14,sanctioned:0,peel:1,phish:0,sim:0,apikey:0}
+};
+const $ = s => document.querySelector(s);
+const vals = {};
+
+/* Build controls */
+const sl = $('#sliders');
+FEATURES.filter(f=>f.slider).forEach(f=>{
+  const wrap = document.createElement('div'); wrap.className = 'field';
+  const lab = document.createElement('label'); lab.htmlFor = 'in_'+f.id; lab.textContent = f.label;
+  const out = document.createElement('output'); out.id = 'o_'+f.id;
+  const inp = document.createElement('input');
+  Object.assign(inp, {type:'range', id:'in_'+f.id, min:f.slider.min, max:f.slider.max, step:f.slider.step, value:f.slider.val});
+  inp.oninput = update;
+  wrap.append(lab, out, inp); sl.append(wrap);
+});
+['sanctioned','peel','phish','sim','apikey'].forEach(id => $('#'+id).onchange = update);
+Object.keys(PRESETS).forEach(name=>{
+  const b = document.createElement('button'); b.type = 'button'; b.textContent = name;
+  b.onclick = () => load(PRESETS[name]); $('#presets').append(b);
+});
+
+function load(p){
+  FEATURES.forEach(f=>{
+    if (f.slider) $('#in_'+f.id).value = p[f.id]; else $('#'+f.id).checked = !!p[f.id];
+  });
+  update();
+}
+function read(){
+  FEATURES.forEach(f=>{
+    if (f.slider){ vals[f.id] = +$('#in_'+f.id).value; $('#o_'+f.id).textContent = f.slider.fmt(vals[f.id]); }
+    else vals[f.id] = $('#'+f.id).checked;
+  });
+}
+
+/* Score */
+let drivers = [], prob = 0;
+function update(){
+  read();
+  let z = BIAS; drivers = [];
+  FEATURES.forEach(f=>{
+    const c = f.w * f.norm(vals[f.id]);
+    z += c;
+    if (c > 0.05) drivers.push({label:f.label, c, cy:f.cy});
+  });
+  prob = 1 / (1 + Math.exp(-z));
+  drivers.sort((a,b)=>b.c-a.c);
+  render();
+}
+function render(){
+  const pct = Math.round(prob*100);
+  $('#pct').textContent = pct + '%';
+  const color = prob<0.3 ? 'var(--go)' : prob<0.65 ? 'var(--amber)' : 'var(--red)';
+  const band = prob<0.3 ? 'Low: routine monitoring' : prob<0.65 ? 'Medium: request more evidence' : 'High: consider escalation';
+  $('#bar').style.width = pct + '%'; $('#bar').style.background = color;
+  $('#band').textContent = band; $('#band').style.color = color;
+
+  const box = $('#drivers'); box.replaceChildren();
+  if (!drivers.length){ box.textContent = 'No risk signals active.'; }
+  const max = Math.max(...drivers.map(d=>d.c), 1);
+  drivers.forEach(d=>{
+    const row = document.createElement('div'); row.className = 'drv';
+    const l = document.createElement('span'); l.textContent = d.label;
+    const track = document.createElement('div'); const b = document.createElement('div');
+    b.className = 'b' + (d.cy ? ' cy' : ''); b.style.width = (d.c/max*100) + '%'; track.append(b);
+    const n = document.createElement('span'); n.textContent = '+' + d.c.toFixed(1);
+    row.append(l, track, n); box.append(row);
+  });
+  $('#story').textContent = narrative();
+}
+function narrative(){
+  const pct = Math.round(prob*100);
+  const top = drivers.slice(0,3).map(d=>d.label.toLowerCase());
+  const cyber = drivers.filter(d=>d.cy).map(d=>d.label.toLowerCase());
+  let t = `Synthetic wallet case. Model risk: ${pct}%.\n`;
+  t += top.length ? `Main drivers: ${top.join(', ')}.\n` : 'No significant risk drivers.\n';
+  t += cyber.length ? `Cyber link: ${cyber.join(', ')} preceded the transfer, which may indicate account takeover rather than the customer's own activity.\n` : 'No cybersecurity indicators were present.\n';
+  t += prob>=0.65 ? 'Suggested next step: investigator review and escalation under procedure.'
+     : prob>=0.3 ? 'Suggested next step: request more evidence and keep monitoring.'
+     : 'Suggested next step: no action beyond routine monitoring.';
+  return t;
+}
+
+/* Copy note */
+$('#copy').onclick = async () => {
+  try { await navigator.clipboard.writeText($('#story').textContent); $('#copy').textContent = 'Copied'; }
+  catch(e){ $('#copy').textContent = 'Copy failed'; }
+  setTimeout(()=>$('#copy').textContent='Copy note',1500);
+};
+
+/* Optional LLM hook. Paste your own proxy URL (for example a Cloudflare Worker) here.
+   Never put an API key in this file: anyone can read it. */
+const WORKER_URL = '';
+$('#llm').onclick = async () => {
+  const out = $('#llmOut');
+  if (!WORKER_URL){ out.textContent = 'No LLM proxy is configured. Set WORKER_URL in this file to enable it.'; return; }
+  out.textContent = 'Asking the co-pilot...';
+  try {
+    const r = await fetch(WORKER_URL, {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({task:'Rewrite this synthetic AML case note for a human investigator. Do not make a final determination.', note:$('#story').textContent})});
+    const j = await r.json();
+    out.textContent = j.text || 'No response.';
+  } catch(e){ out.textContent = 'The co-pilot could not be reached.'; }
+};
+
+load(PRESETS['Account takeover cash-out']);
+</script>
+</body>
+</html>
