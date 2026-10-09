@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transaction Web | Following crypto laundering across borders</title>
+<meta name="description" content="An interactive, synthetic case showing how illicit crypto moves through many jurisdictions in hours, and how an AML checklist exposes it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF2F5; --panel:#FFFFFF; --ink:#12263F; --muted:#5A6E84; --grid:#D3DCE5;
+    --line:#8CA0B3; --flag:#C8372D; --flag-soft:#FBE4E1; --caution:#B97800; --ok:#1E7F6B; --blue:#1F5FA8;
+    --head:"Archivo Narrow","Arial Narrow",Arial,sans-serif;
+    --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+  a{color:var(--blue)}
+  :focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+  .top{border-bottom:1px solid var(--grid);background:var(--panel)}
+  .top .wrap{display:flex;gap:22px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px;font-weight:500}
+  .top a{text-decoration:none}
+  .top a:hover{text-decoration:underline}
+  .top a[aria-current="page"]{color:var(--ink);font-weight:600;border-bottom:2px solid var(--ink)}
+
+  .hero{padding:44px 0 18px}
+  h1{font-family:var(--head);font-weight:700;font-size:clamp(2.1rem,5vw,3.6rem);line-height:1.04;margin:0 0 14px;letter-spacing:-.01em;max-width:18ch}
+  .hero p{max-width:66ch;margin:0 0 10px;color:#26405C}
+  h2{font-family:var(--head);font-weight:600;font-size:1.6rem;margin:0 0 6px;letter-spacing:-.005em}
+  h3{font-family:var(--head);font-weight:600;font-size:1.2rem;margin:0 0 4px}
+  .lede{color:var(--muted);margin:0 0 14px;max-width:70ch}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--grid);border:1px solid var(--grid);border-radius:10px;overflow:hidden;margin:22px 0 14px}
+  .stat{background:var(--panel);padding:12px 16px}
+  .stat b{display:block;font-family:var(--head);font-size:1.9rem;line-height:1.1}
+  .stat span{color:var(--muted);font-size:.92rem}
+  .stat.hot b{color:var(--flag)}
+
+  .board{background:var(--panel);border:1px solid var(--grid);border-radius:12px;padding:14px}
+  .scroll{overflow-x:auto}
+  .scroll svg{display:block;min-width:760px;width:100%;height:auto}
+  .controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 4px 2px}
+  .btn{font:inherit;font-weight:600;border:1.5px solid var(--ink);background:var(--panel);color:var(--ink);padding:8px 16px;border-radius:8px;cursor:pointer}
+  .btn:hover{background:var(--ink);color:#fff}
+  .btn.primary{background:var(--ink);color:#fff}
+  .btn.primary:hover{background:#0b1a2d}
+  .btn:disabled{opacity:.45;cursor:not-allowed;background:var(--panel);color:var(--ink)}
+  .timeline{flex:1;min-width:220px;display:flex;align-items:center;gap:10px}
+  .timeline input{flex:1;accent-color:var(--ink)}
+  .clock{font-family:var(--head);font-weight:600;min-width:7.5ch;text-align:right}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.92rem;color:var(--muted);padding:8px 4px 0}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+  .cols{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;margin-top:22px}
+  .card{background:var(--panel);border:1px solid var(--grid);border-radius:12px;padding:18px 20px}
+  .inspector{min-height:260px;position:sticky;top:12px;align-self:start}
+  .inspector .kicker{color:var(--muted);font-size:.95rem;margin:0 0 8px}
+  .inspector dl{margin:12px 0 0}
+  .inspector dt{font-weight:600;margin-top:10px}
+  .inspector dd{margin:2px 0 0;color:#26405C}
+  .tag{display:inline-block;font-size:.85rem;font-weight:600;padding:2px 9px;border-radius:99px;border:1px solid var(--grid);background:var(--paper);margin:2px 4px 2px 0}
+  .tag.red{background:var(--flag-soft);border-color:#EBB5AF;color:#8E231B}
+  .tag.amber{background:#FFF1D1;border-color:#EAC77E;color:#7A5000}
+
+  .checks{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+  .check{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:10px 12px;border:1.5px solid var(--grid);border-radius:10px;cursor:pointer;background:var(--panel)}
+  .check:hover{border-color:var(--muted)}
+  .check.on{border-color:var(--flag);background:var(--flag-soft)}
+  .check input{margin-top:5px;width:18px;height:18px;accent-color:var(--flag)}
+  .check b{display:block;font-weight:600}
+  .check span{display:block;color:var(--muted);font-size:.95rem}
+  .tools{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+
+  .decide{margin-top:22px}
+  .decide .opts{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+  #verdict{margin:8px 0 0;padding:14px 16px;border-radius:10px;background:var(--paper);border-left:5px solid var(--muted);display:none}
+  #verdict.good{display:block;border-color:var(--ok)}
+  #verdict.warn{display:block;border-color:var(--caution)}
+  #verdict.bad{display:block;border-color:var(--flag)}
+
+  .note{margin:26px 0 40px;padding:14px 18px;border:1px dashed var(--muted);border-radius:10px;color:var(--muted);font-size:.95rem}
+
+  svg text{font-family:var(--body)}
+  .edge{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .8s ease,stroke .25s}
+  .edge.on{stroke-dashoffset:0}
+  .edge.flagged{stroke:var(--flag);stroke-width:3.4}
+  .edge.sel{stroke:var(--blue);stroke-width:4}
+  .hit{fill:none;stroke:transparent;stroke-width:16;cursor:pointer;pointer-events:none}
+  .hit.on{pointer-events:stroke}
+  .amt{font-size:11.5px;fill:var(--muted);opacity:0;transition:opacity .4s;pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:4px}
+  .amt.on{opacity:1}
+  .amt.flagged{fill:#8E231B;font-weight:600}
+  .node{cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s}
+  .node.on{opacity:1;pointer-events:auto}
+  .node circle.body{fill:#fff;stroke:var(--ink);stroke-width:2;transition:fill .25s,stroke .25s}
+  .node.flagged circle.body{fill:var(--flag-soft);stroke:var(--flag);stroke-width:3}
+  .node.sel circle.body{stroke:var(--blue);stroke-width:4}
+  .node .jt{font-family:var(--head);font-weight:700;font-size:16px;fill:var(--ink)}
+  .node .lb{font-size:12.5px;font-weight:600;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:4px}
+  .stage{font-family:var(--head);font-weight:600;font-size:14px;fill:var(--muted)}
+  .risk{fill:none;stroke:var(--caution);stroke-width:2;stroke-dasharray:3 3}
+
+  @media (max-width:860px){
+    .cols{grid-template-columns:1fr}
+    .inspector{position:static}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .edge,.node,.amt{transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Site">
+  <div class="wrap">
+    <a href="https://afnan-debug.github.io/">← Portfolio</a>
+    <a href="https://afnan-debug.github.io/index.html">Captain's Deck</a>
+    <a href="https://afnan-debug.github.io/ai-lab.html">Co-pilot Lab</a>
+    <a href="transaction-web.html" aria-current="page">Transaction Web</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Follow the money through eight countries in 40 hours</h1>
+    <p>Criminals rarely move funds in one step. Fraud proceeds, ransom payments and bribes are split, swapped and passed through many wallets, companies and jurisdictions, so each hop on its own looks ordinary.</p>
+    <p>Press play to watch a synthetic case unfold. Then work through the AML checklist and see how the same web lights up once someone asks the right questions.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section aria-labelledby="web-h">
+    <h2 id="web-h">The transaction web</h2>
+    <p class="lede">Money flows left to right. Letters in the circles are jurisdictions. Select any wallet or transfer to inspect it.</p>
+
+    <div class="stats" aria-live="polite">
+      <div class="stat"><b id="s-time">0 h</b><span>Elapsed since first transfer</span></div>
+      <div class="stat"><b id="s-hops">0</b><span>Transfers so far</span></div>
+      <div class="stat"><b id="s-juris">0</b><span>Jurisdictions touched</span></div>
+      <div class="stat hot"><b id="s-flag">0 of 0</b><span>Transfers you have flagged</span></div>
+    </div>
+
+    <div class="board">
+      <div class="scroll"><svg id="web" viewBox="0 0 1000 620" role="img" aria-label="Network graph of a synthetic money laundering case. Select nodes and transfers for details."></svg></div>
+      <div class="controls">
+        <button class="btn primary" id="play" type="button">Play</button>
+        <div class="timeline">
+          <label for="t" style="font-weight:600">Timeline</label>
+          <input id="t" type="range" min="0" max="48" step="0.25" value="0">
+          <span class="clock" id="clock">Hour 0</span>
+        </div>
+        <button class="btn" id="restart" type="button">Restart</button>
+      </div>
+      <div class="legend">
+        <span><i style="background:#fff;border:2px solid var(--ink)"></i>Looks ordinary</span>
+        <span><i style="background:var(--flag-soft);border:2px solid var(--flag)"></i>Caught by your checklist</span>
+        <span><i style="background:#fff;border:2px dashed var(--caution)"></i>Jurisdiction with weak AML supervision (illustrative)</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cols" aria-label="Inspect and review">
+    <div class="card inspector" id="inspector" aria-live="polite"></div>
+
+    <div class="card">
+      <h2>Captain's AML checklist</h2>
+      <p class="lede">Tick each check you would run. Matching wallets and transfers turn red. Whatever stays grey is what slips through.</p>
+      <ul class="checks" id="checks"></ul>
+      <div class="tools">
+        <button class="btn" id="all" type="button">Run every check</button>
+        <button class="btn" id="none" type="button">Clear checks</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card decide" aria-labelledby="dec-h">
+    <h2 id="dec-h">Your decision</h2>
+    <p class="lede">One red flag rarely proves anything. Several that point the same way are what justify action. What would you do with this case?</p>
+    <div class="opts">
+      <button class="btn" data-d="clear" type="button">Clear: no action</button>
+      <button class="btn" data-d="hold" type="button">Hold and request documents</button>
+      <button class="btn" data-d="escalate" type="button">Escalate: file a suspicious activity report</button>
+    </div>
+    <p id="verdict" role="status"></p>
+  </section>
+
+  <p class="note">Portfolio demonstration only. Every wallet, company, amount and jurisdiction is invented, and the patterns are described at the level of public red flags, not as instructions. Real cases need documented evidence, and a human compliance officer makes the final call.</p>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Synthetic case data ---------- */
+  var RISKY = {C:1, F:1, G:1};
+  var STAGES = [
+    {x:80,  t:"Illicit proceeds"},
+    {x:260, t:"Fresh wallets"},
+    {x:430, t:"Blur the origin"},
+    {x:600, t:"Cross-chain"},
+    {x:760, t:"Exchange"},
+    {x:920, t:"Cash-out"}
+  ];
+
+  var NODES = [
+    {id:"V1", label:"Phishing victims", x:80,  y:110, j:"A", desc:"Stolen funds from many small victims are swept into one address.", ask:"Is the inflow consistent with what this customer says they do?"},
+    {id:"V2", label:"Ransom payment",   x:80,  y:300, j:"B", desc:"A ransom paid in bitcoin leaves its first wallet within minutes.", ask:"Does blockchain analytics link this wallet to a known ransomware cluster?"},
+    {id:"V3", label:"Contract kickback",x:80,  y:510, j:"C", desc:"A contractor pays an 'advisory fee' tied to a public contract. The recipient is connected to an official's relative.", ask:"Who owns the receiving company, and is any party a politically exposed person?"},
+    {id:"M1", label:"Mule wallet 1",    x:260, y:90,  j:"D", desc:"Created hours earlier. Receives and forwards almost everything.", ask:"How old is this wallet and how long did funds rest here?"},
+    {id:"M2", label:"Mule wallet 2",    x:260, y:300, j:"D", desc:"Another new wallet in the same jurisdiction, active for less than a day.", ask:"Do several new wallets share timing, funding source or device?"},
+    {id:"SH", label:"Shell company",    x:260, y:510, j:"F", desc:"Receives a wire for 'consulting'. No staff, no website, and an address shared with hundreds of other companies.", ask:"Do the invoice and the business purpose match real services?"},
+    {id:"M3", label:"Mule wallet 3",    x:430, y:160, j:"E", desc:"Receives a large balance and forwards it in slices.", ask:"Is a large balance being cut into many smaller transfers?"},
+    {id:"MX", label:"Mixing service",   x:430, y:330, j:"?", desc:"A service built to blur which coins came from where.", ask:"What share of this customer's value touches mixers?"},
+    {id:"BR", label:"Cross-chain swap", x:600, y:240, j:"?", desc:"Value is swapped to another blockchain, so the trail continues on a different ledger.", ask:"How many cross-chain swaps happened in a short window?"},
+    {id:"NX", label:"Nested exchange",  x:760, y:380, j:"G", desc:"An exchange account that itself serves hidden sub-customers, so the real owner is unclear.", ask:"Who is the beneficial owner behind this account?"},
+    {id:"OTC",label:"OTC desk",         x:920, y:120, j:"H", desc:"A large crypto balance is sold for cash through an over-the-counter desk.", ask:"Is the source of funds documented for a sale this size?"},
+    {id:"RE", label:"Property purchase",x:920, y:250, j:"C", desc:"Cash buys property through a company, in the same jurisdiction where the kickback began. The money has come home.", ask:"Does the buyer's declared income support this purchase?"},
+    {id:"PC", label:"Prepaid cards",    x:920, y:400, j:"E", desc:"Funds are loaded onto many cards in small amounts.", ask:"Why are there so many small loads from one source?"},
+    {id:"LG", label:"Luxury goods",     x:920, y:530, j:"H", desc:"Watches and art that can be resold, turning crypto into portable value.", ask:"Is spending in line with the cardholder's profile?"}
+  ];
+
+  var EDGES = [
+    {id:"e1", a:"V1", b:"M1",  t:0,    amt:120, asset:"USDT",       note:"Swept within minutes of receipt."},
+    {id:"e2", a:"V2", b:"M2",  t:0.5,  amt:310, asset:"BTC",        note:"Ransom moved out within 30 minutes."},
+    {id:"e3", a:"V3", b:"SH",  t:1,    amt:480, asset:"Bank wire",  note:"Invoice for 'advisory services' with no deliverables."},
+    {id:"e4", a:"M1", b:"M3",  t:1.5,  amt:118, asset:"USDT",       note:"Nearly the full amount forwarded after a short pause."},
+    {id:"e5", a:"M2", b:"MX",  t:2,    amt:305, asset:"BTC",        note:"Deposit into a mixing service."},
+    {id:"e6", a:"M3", b:"BR",  t:3,    amt:116, asset:"USDT to ETH",note:"Swapped to another chain three hours in."},
+    {id:"e7", a:"MX", b:"BR",  t:5,    amt:300, asset:"BTC to ETH", note:"Mixer output swapped across chains."},
+    {id:"e8", a:"BR", b:"NX",  t:6,    amt:410, asset:"ETH",        note:"Pooled and sent to a nested exchange account."},
+    {id:"e9", a:"SH", b:"NX",  t:8,    amt:470, asset:"USDC",       note:"Wire proceeds converted to stablecoin and deposited."},
+    {id:"e10",a:"NX", b:"OTC", t:12,   amt:600, asset:"USDT",       note:"One large withdrawal to an OTC desk."},
+    {id:"e11",a:"NX", b:"PC",  t:14,   amt:150, asset:"USDT",       note:"Converted and loaded onto many cards in small amounts."},
+    {id:"e12",a:"OTC",b:"RE",  t:30,   amt:590, asset:"Bank wire",  note:"Cash buys property through a company."},
+    {id:"e13",a:"PC", b:"LG",  t:40,   amt:145, asset:"Card spend", note:"Spent on resalable luxury goods."}
+  ];
+
+  var CHECKS = [
+    {id:"c1", title:"Source of funds matches the story",   ask:"Do the invoice, sender and business purpose agree?",            nodes:["V3","SH"],            edges:["e3","e9"]},
+    {id:"c2", title:"Money in, money out within hours",    ask:"How long did funds rest before moving on?",                     nodes:["M1","M2","M3"],       edges:["e1","e2","e4","e5","e6","e10"]},
+    {id:"c3", title:"Fresh or newly active wallets",       ask:"How old is the wallet and what did it do before?",              nodes:["M1","M2","M3"],       edges:["e1","e2"]},
+    {id:"c4", title:"Mixer exposure",                      ask:"How much value touches services that blur origin?",            nodes:["MX"],                 edges:["e5","e7"]},
+    {id:"c5", title:"Chain-hopping",                       ask:"How many cross-chain swaps in a short window?",                 nodes:["BR"],                 edges:["e6","e7","e8"]},
+    {id:"c6", title:"Weak-supervision jurisdictions",      ask:"Which countries does the path touch, and how well are they supervised?", nodes:["V3","SH","NX","RE"], edges:["e3","e9","e12"]},
+    {id:"c7", title:"Large balance cut into slices",       ask:"Are big amounts split into many smaller pieces?",               nodes:["M3","PC"],            edges:["e4","e11"]},
+    {id:"c8", title:"Unclear beneficial owner",            ask:"Who is really behind this account?",                            nodes:["NX"],                 edges:["e8","e9","e10","e11"]},
+    {id:"c9", title:"Cash-out into portable assets",       ask:"Where does the value land, and does it fit the owner's profile?", nodes:["OTC","RE","PC","LG"], edges:["e10","e11","e12","e13"]}
+  ];
+
+  /* ---------- State ---------- */
+  var T = 0, playing = false, timer = null;
+  var checked = {};
+  var sel = null; // {type:'node'|'edge', id}
+  var nodeById = {}, edgeById = {};
+  NODES.forEach(function(n){ nodeById[n.id]=n; n.t0 = 999; });
+  EDGES.forEach(function(e){
+    edgeById[e.id]=e;
+    nodeById[e.a].t0 = Math.min(nodeById[e.a].t0, e.t);
+    nodeById[e.b].t0 = Math.min(nodeById[e.b].t0, e.t);
+  });
+
+  /* ---------- SVG build ---------- */
+  var NS = "http://www.w3.org/2000/svg";
+  var svg = document.getElementById("web");
+  function el(tag, attrs, parent, text){
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  var defs = el("defs", {}, svg);
+  var pat = el("pattern", {id:"grid", width:40, height:40, patternUnits:"userSpaceOnUse"}, defs);
+  el("path", {d:"M40 0H0V40", fill:"none", stroke:"#E3EAF0", "stroke-width":1}, pat);
+  el("rect", {x:0, y:0, width:1000, height:620, fill:"url(#grid)"}, svg);
+
+  STAGES.forEach(function(s){
+    el("text", {x:s.x, y:28, "text-anchor":"middle", "class":"stage"}, svg, s.t);
+  });
+
+  var gEdges = el("g", {}, svg), gAmts = el("g", {}, svg), gNodes = el("g", {}, svg);
+
+  function curve(a, b){
+    var dx = b.x - a.x;
+    return "M"+a.x+" "+a.y+" C"+(a.x+dx/2)+" "+a.y+" "+(b.x-dx/2)+" "+b.y+" "+b.x+" "+b.y;
+  }
+  function money(v){ return "$"+v+"k"; }
+
+  EDGES.forEach(function(e){
+    var A = nodeById[e.a], B = nodeById[e.b], d = curve(A,B);
+    e.path = el("path", {d:d, "class":"edge", pathLength:1}, gEdges);
+    e.hit  = el("path", {d:d, "class":"hit", pathLength:1}, gEdges);
+    e.hit.addEventListener("click", function(){ select("edge", e.id); });
+    var mx = (A.x+B.x)/2, my = (A.y+B.y)/2 - 7;
+    e.lab = el("text", {x:mx, y:my, "text-anchor":"middle", "class":"amt"}, gAmts, money(e.amt));
+  });
+
+  NODES.forEach(function(n){
+    var g = el("g", {"class":"node", tabindex:0, role:"button", "aria-label":n.label+", jurisdiction "+n.j, transform:"translate("+n.x+" "+n.y+")"}, gNodes);
+    if (RISKY[n.j]) el("circle", {r:33, "class":"risk"}, g);
+    el("circle", {r:25, "class":"body"}, g);
+    el("text", {y:6, "text-anchor":"middle", "class":"jt"}, g, n.j);
+    el("text", {y:46, "text-anchor":"middle", "class":"lb"}, g, n.label);
+    g.addEventListener("click", function(){ select("node", n.id); });
+    g.addEventListener("keydown", function(ev){
+      if (ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); select("node", n.id); }
+    });
+    n.g = g;
+  });
+
+  /* ---------- Checklist ---------- */
+  var checksEl = document.getElementById("checks");
+  CHECKS.forEach(function(c){
+    var li = document.createElement("li");
+    var lab = document.createElement("label");
+    lab.className = "check";
+    var cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.addEventListener("change", function(){
+      checked[c.id] = cb.checked;
+      render();
+    });
+    var box = document.createElement("div");
+    box.innerHTML = "<b></b><span></span>";
+    box.firstChild.textContent = c.title;
+    box.lastChild.textContent = c.ask;
+    lab.appendChild(cb); lab.appendChild(box);
+    li.appendChild(lab);
+    checksEl.appendChild(li);
+    c.cb = cb; c.lab = lab;
+  });
+
+  document.getElementById("all").onclick = function(){ CHECKS.forEach(function(c){ checked[c.id]=true; c.cb.checked=true; }); render(); };
+  document.getElementById("none").onclick = function(){ CHECKS.forEach(function(c){ checked[c.id]=false; c.cb.checked=false; }); render(); };
+
+  /* ---------- Selection / inspector ---------- */
+  function select(type, id){ sel = {type:type, id:id}; render(); }
+
+  function caughtBy(kind, id){
+    var out = [];
+    CHECKS.forEach(function(c){
+      if (checked[c.id] && c[kind].indexOf(id) > -1) out.push(c.title);
+    });
+    return out;
+  }
+  function tags(list, cls){
+    return list.map(function(t){ var s=document.createElement("span"); s.className="tag "+cls; s.textContent=t; return s.outerHTML; }).join("");
+  }
+  function esc(s){ var d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+  function renderInspector(){
+    var box = document.getElementById("inspector");
+    if (!sel){
+      box.innerHTML = "<h3>Inspector</h3><p class='kicker'>Nothing selected</p><p>Select a wallet or a transfer in the web. Each one explains what it is and what a careful reviewer would ask.</p>";
+      return;
+    }
+    if (sel.type === "node"){
+      var n = nodeById[sel.id], by = caughtBy("nodes", n.id);
+      var risk = RISKY[n.j] ? "<span class='tag amber'>Weak AML supervision (illustrative)</span>" : "";
+      var jtxt = n.j === "?" ? "No single jurisdiction (on-chain service)" : "Jurisdiction " + n.j;
+      box.innerHTML =
+        "<h3>"+esc(n.label)+"</h3><p class='kicker'>"+esc(jtxt)+"</p>"+risk+
+        "<dl><dt>What is happening</dt><dd>"+esc(n.desc)+"</dd>"+
+        "<dt>The reviewer's question</dt><dd>"+esc(n.ask)+"</dd>"+
+        "<dt>Status</dt><dd>"+(by.length ? tags(by,"red") : "<span class='tag'>Looks ordinary so far. Tick a check that would catch it.</span>")+"</dd></dl>";
+    } else {
+      var e = edgeById[sel.id], A = nodeById[e.a], B = nodeById[e.b], byE = caughtBy("edges", e.id);
+      box.innerHTML =
+        "<h3>"+esc(A.label)+" to "+esc(B.label)+"</h3><p class='kicker'>"+money(e.amt)+" in "+esc(e.asset)+" at hour "+e.t+"</p>"+
+        "<dl><dt>What is happening</dt><dd>"+esc(e.note)+"</dd>"+
+        "<dt>Status</dt><dd>"+(byE.length ? tags(byE,"red") : "<span class='tag'>Unnoticed so far. On its own it looks like a normal payment.</span>")+"</dd></dl>";
+    }
+  }
+
+  /* ---------- Render ---------- */
+  function fmtHour(h){ return "Hour " + (Math.round(h*4)/4).toString().replace(/\.0+$/,""); }
+
+  function render(){
+    var revealed = 0, flagged = 0, jset = {};
+    EDGES.forEach(function(e){
+      var on = T >= e.t, f = caughtBy("edges", e.id).length > 0;
+      e.path.classList.toggle("on", on);
+      e.hit.classList.toggle("on", on);
+      e.lab.classList.toggle("on", on);
+      e.path.classList.toggle("flagged", f);
+      e.lab.classList.toggle("flagged", f);
+      e.path.classList.toggle("sel", !!(sel && sel.type==="edge" && sel.id===e.id));
+      if (on){ revealed++; if (f) flagged++; }
+    });
+    NODES.forEach(function(n){
+      var on = T >= n.t0;
+      n.g.classList.toggle("on", on);
+      n.g.classList.toggle("flagged", caughtBy("nodes", n.id).length > 0);
+      n.g.classList.toggle("sel", !!(sel && sel.type==="node" && sel.id===n.id));
+      if (on && n.j !== "?") jset[n.j] = 1;
+    });
+    CHECKS.forEach(function(c){ c.lab.classList.toggle("on", !!checked[c.id]); });
+
+    document.getElementById("s-time").textContent = (Math.round(T*4)/4) + " h";
+    document.getElementById("s-hops").textContent = revealed;
+    document.getElementById("s-juris").textContent = Object.keys(jset).length;
+    document.getElementById("s-flag").textContent = flagged + " of " + revealed;
+    document.getElementById("clock").textContent = fmtHour(T);
+    document.getElementById("t").value = T;
+    renderInspector();
+  }
+
+  /* ---------- Timeline ---------- */
+  var playBtn = document.getElementById("play"), slider = document.getElementById("t");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function stop(){ playing = false; clearInterval(timer); playBtn.textContent = (T >= 48 ? "Replay" : "Play"); }
+  function start(){
+    if (T >= 48) T = 0;
+    playing = true; playBtn.textContent = "Pause";
+    timer = setInterval(function(){
+      T = Math.min(48, T + 0.25);
+      render();
+      if (T >= 48) stop();
+    }, reduce ? 20 : 60);
+  }
+  playBtn.onclick = function(){ playing ? stop() : start(); };
+  slider.oninput = function(){ if (playing) stop(); T = parseFloat(slider.value); render(); };
+  document.getElementById("restart").onclick = function(){ stop(); T = 0; sel = null; render(); playBtn.textContent = "Play"; };
+
+  /* ---------- Decision ---------- */
+  var verdict = document.getElementById("verdict");
+  document.querySelectorAll("[data-d]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var d = b.getAttribute("data-d");
+      var nChecks = CHECKS.filter(function(c){ return checked[c.id]; }).length;
+      var fl = EDGES.filter(function(e){ return caughtBy("edges", e.id).length > 0; }).length;
+      var total = EDGES.length, msg, cls;
+      if (T < 48){
+        verdict.className = "warn";
+        verdict.textContent = "Play the timeline to hour 48 first. A decision made before the cash-out stage sees only part of the story.";
+        return;
+      }
+      if (nChecks === 0){
+        verdict.className = "warn";
+        verdict.textContent = "No checks run yet. Right now every transfer looks like an ordinary payment, which is exactly how this case goes unnoticed. Tick checks from the checklist and decide again.";
+        return;
+      }
+      if (d === "clear"){
+        cls = "bad";
+        msg = "Your checks flagged " + fl + " of " + total + " transfers across " + nChecks + " indicators, so clearing the case would let it through. Several independent red flags pointing the same way is the signal, even when each transfer alone is explainable.";
+      } else if (d === "hold"){
+        if (nChecks >= 5){ cls = "warn"; msg = "Holding and asking for documents is a sound first step. With " + nChecks + " indicators converging across " + fl + " of " + total + " transfers, your file also supports escalation if the answers do not hold up."; }
+        else { cls = "good"; msg = "A sensible, proportionate response to " + nChecks + " indicators. Running more checks would show whether the pattern is as broad as it looks."; }
+      } else {
+        if (nChecks >= 5){ cls = "good"; msg = "Well supported. " + nChecks + " independent indicators cover " + fl + " of " + total + " transfers, and the path spans several jurisdictions in under two days. That is a strong basis for a suspicious activity report, with the final decision resting with the compliance officer."; }
+        else { cls = "warn"; msg = "Escalation is defensible, but your file is thin with only " + nChecks + " indicators. Run more checks so the report explains why the whole path looks suspicious, not just one part."; }
+      }
+      verdict.className = cls;
+      verdict.textContent = msg;
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
